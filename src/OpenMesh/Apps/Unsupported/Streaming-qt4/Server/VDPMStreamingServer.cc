@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 //   app.setMainWidget(&server_widget);
   server_widget.show();
 
-  for (int idx=1; idx < argc; ++idx)
+  for (short idx=1; idx < argc; ++idx)
   {
     std::cout << "loading " << argv[idx] << std::endl;
     server_widget.open_vd_prog_mesh( argv[idx] ) ;
