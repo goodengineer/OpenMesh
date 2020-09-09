@@ -413,7 +413,7 @@ outside_view_frustum(const OpenMesh::Vec3f &pos, float radius)
 
   viewing_parameters_.frustum_planes(frustum_plane);
 
-	for (int i = 0; i < 4; i++) {
+	for (short i = 0; i < 4; i++) {
 		if (frustum_plane[i].signed_distance(pos) < -radius)
 			return	true;
 	}
@@ -446,7 +446,7 @@ void
 VDPMClientViewerWidget::
 open_vd_prog_mesh(const char* _filename)
 {
-  unsigned int                    i;
+  short                 i;
   unsigned int                    value;
   unsigned int                    fvi[3];
   char                            fileformat[16];
@@ -620,7 +620,7 @@ void
 VDPMClientViewerWidget::
 open_vd_base_mesh(const char* _filename)
 {
-  unsigned int                    i;
+  short                    i;
   unsigned int                    fvi[3];
   //int                             tree_id, node_id;
   char                            fileformat[16];
@@ -793,7 +793,7 @@ void VDPMClientViewerWidget::keyPressEvent(QKeyEvent* _event)
   {
     case Qt::Key_Plus:
       viewing_parameters_.increase_tolerance();
-      std::cout << "Scree-space error tolerance^2 is increased by " 
+      std::cout << "Screen-space error tolerance^2 is increased by " 
 		<< viewing_parameters_.tolerance_square() << std::endl;
       updateGL();
       break;
@@ -861,7 +861,7 @@ void VDPMClientViewerWidget::keyPressEvent(QKeyEvent* _event)
     case Qt::Key_V:
       vd_streaming_ = !(vd_streaming_);
       if (vd_streaming_)
-        std::cout << "View-dependent streaing mode" << std::endl;
+        std::cout << "View-dependent streaming mode" << std::endl;
       else
         std::cout << "Sequential streaming mode" << std::endl;
       break;
@@ -1098,7 +1098,7 @@ receive_vsplit_packets()
   while ( qSocket_->bytesAvailable() >= len )
   {
     if (vd_streaming_)  transmitted_datasize_ += (int) len;
-    //if (vd_streaming_)  transmitted_datasize_ += (int) 3*sizeof(int) + 3*sizeof(float); // only for non-refinement cliet
+    //if (vd_streaming_)  transmitted_datasize_ += (int) 3*sizeof(int) + 3*sizeof(float); // only for non-refinement client
     else                transmitted_datasize_ += (int) 3*sizeof(int) + 3*sizeof(float);
 
     if (max_transmitted_datasize_ > 0)
@@ -1106,7 +1106,7 @@ receive_vsplit_packets()
       if (transmitted_datasize_ > max_transmitted_datasize_)
       {
         if (vd_streaming_)  transmitted_datasize_ -= (int) len;
-        //if (vd_streaming_)  transmitted_datasize_ -= (int) 3*sizeof(int) + 3*sizeof(float); // only for non-refinement cliet
+        //if (vd_streaming_)  transmitted_datasize_ -= (int) 3*sizeof(int) + 3*sizeof(float); // only for non-refinement client
         else                transmitted_datasize_ -= (int) 3*sizeof(int) + 3*sizeof(float);
 
         return;
@@ -1191,7 +1191,6 @@ update_vhierarchy(
   node_handle = vhierarchy_.node_handle(_node_index);
   vhierarchy_.make_children(node_handle);
   
-
   lchild_handle = vhierarchy_.lchild_handle(node_handle);
   rchild_handle = vhierarchy_.rchild_handle(node_handle);
 
@@ -1246,8 +1245,7 @@ void VDPMClientViewerWidget::save_views()
     current_projection_matrix[4],  current_projection_matrix[5],  current_projection_matrix[6],  current_projection_matrix[7],
     current_projection_matrix[8],  current_projection_matrix[9],  current_projection_matrix[10], current_projection_matrix[11],
     current_projection_matrix[12], current_projection_matrix[13], current_projection_matrix[14], current_projection_matrix[15]);
-
-  
+	
   fprintf(camera_file, "%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
     reserved_modelview_matrix_[0],  reserved_modelview_matrix_[1],  reserved_modelview_matrix_[2],  reserved_modelview_matrix_[3],
     reserved_modelview_matrix_[4],  reserved_modelview_matrix_[5],  reserved_modelview_matrix_[6],  reserved_modelview_matrix_[7],
