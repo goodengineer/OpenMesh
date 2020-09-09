@@ -266,7 +266,7 @@ ecol_legal(VHierarchyNodeHandle _parent_handle, VDPMMesh::HalfedgeHandle& v0v1)
     lchild_handle = vhierarchy_.lchild_handle(_parent_handle),
     rchild_handle = vhierarchy_.rchild_handle(_parent_handle);
 
-  // test whether lchild & rchild present in the current vfront
+  // test whether lchild & rchild presented in the current vfront
   if ( vfront_.is_active(lchild_handle) != true || 
        vfront_.is_active(rchild_handle) != true)
     return  false;  
@@ -492,7 +492,6 @@ open_vd_prog_mesh(const char* _filename)
     IO::restore(ifs, value, swap);
     fund_rcut_index = VHierarchyNodeIndex(value);
 
-
     node_handle = index2handle_map[node_index];
     vhierarchy_.make_children(node_handle);
 
@@ -580,7 +579,7 @@ void VDPMSynthesizerViewerWidget::keyPressEvent(QKeyEvent* _event)
       
     case Key_Minus:
       viewing_parameters_.increase_tolerance();
-      std::cout << "Scree-space error tolerance^2 is increased by " 
+      std::cout << "Screen-space error tolerance^2 is increased by " 
 		<< viewing_parameters_.tolerance_square() << std::endl;
       updateGL();
       break;
@@ -609,9 +608,6 @@ void VDPMSynthesizerViewerWidget::keyPressEvent(QKeyEvent* _event)
   }
   
 }
-
-
-
 
 
 void
