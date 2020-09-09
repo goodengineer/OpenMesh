@@ -60,7 +60,7 @@
 #define TEMPLATE_HEADER   template <typename Scalar, int N>
 #define CLASSNAME         VectorT
 #define DERIVED           VectorDataT<Scalar,N>
-#define unroll(expr)      for (int i=0; i<N; ++i) expr(i)
+#define unroll(expr)      for (short i=0; i<N; ++i) expr(i)
 
 #endif
 
@@ -485,9 +485,8 @@ public:
 
   /// compute l8_norm
   inline Scalar l8_norm() const
-  {
     return max_abs();
-  }
+  
 
   //@}
 
@@ -500,7 +499,7 @@ public:
   inline Scalar max() const 
   {
     Scalar m(Base::values_[0]);
-    for(int i=1; i<DIM; ++i) if(Base::values_[i]>m) m=Base::values_[i];
+    for(short i=1; i<DIM; ++i) if(Base::values_[i]>m) m=Base::values_[i];
     return m;
   }
 
@@ -508,7 +507,7 @@ public:
   inline Scalar max_abs() const
   {
     Scalar m(std::abs(Base::values_[0]));
-    for(int i=1; i<DIM; ++i) 
+    for(short i=1; i<DIM; ++i) 
       if(std::abs(Base::values_[i])>m)
         m=std::abs(Base::values_[i]);
     return m;
@@ -519,7 +518,7 @@ public:
   inline Scalar min() const 
   {
     Scalar m(Base::values_[0]);
-    for(int i=1; i<DIM; ++i) if(Base::values_[i]<m) m=Base::values_[i];
+    for(short i=1; i<DIM; ++i) if(Base::values_[i]<m) m=Base::values_[i];
     return m;
   }
 
@@ -527,7 +526,7 @@ public:
   inline Scalar min_abs() const 
   {
     Scalar m(std::abs(Base::values_[0]));
-    for(int i=1; i<DIM; ++i) 
+    for(short i=1; i<DIM; ++i) 
       if(std::abs(Base::values_[i])<m)
         m=std::abs(Base::values_[i]);
     return m;
@@ -536,14 +535,14 @@ public:
   /// return arithmetic mean
   inline Scalar mean() const {
     Scalar m(Base::values_[0]);
-    for(int i=1; i<DIM; ++i) m+=Base::values_[i];
+    for(short i=1; i<DIM; ++i) m+=Base::values_[i];
     return m/Scalar(DIM);
   }
 
   /// return absolute arithmetic mean
   inline Scalar mean_abs() const {
     Scalar m(std::abs(Base::values_[0]));
-    for(int i=1; i<DIM; ++i) m+=std::abs(Base::values_[i]);
+    for(short i=1; i<DIM; ++i) m+=std::abs(Base::values_[i]);
     return m/Scalar(DIM);
   }
 
@@ -651,7 +650,7 @@ inline std::ostream&
 operator<<(std::ostream& os, const VectorT<Scalar,DIM>& vec)
 {
 #if DIM==N
-  for(int i=0; i<N-1; ++i) os << vec[i] << " ";
+  for(short i=0; i<N-1; ++i) os << vec[i] << " ";
   os << vec[N-1];
 #else
 #define expr(i) vec[i]
