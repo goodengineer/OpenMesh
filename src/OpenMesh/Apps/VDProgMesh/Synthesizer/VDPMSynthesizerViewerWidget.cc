@@ -580,7 +580,7 @@ void VDPMSynthesizerViewerWidget::keyPressEvent(QKeyEvent* _event)
       
     case Key_Minus:
       viewing_parameters_.increase_tolerance();
-      std::cout << "Scree-space error tolerance^2 is increased by " 
+      std::cout << "Screen-space error tolerance^2 is increased by " 
 		<< viewing_parameters_.tolerance_square() << std::endl;
       updateGL();
       break;
