@@ -142,7 +142,7 @@ send_vsplit_packets()
 
   if (debug_print() == true)
   {
-    std::cout << "streameing vsplits is done" << std::endl;
+    std::cout << "streaming vsplits is done" << std::endl;
   }
   
   if (transmission_complete_ == true)
@@ -375,11 +375,10 @@ outside_view_frustum(const OpenMesh::Vec3f &pos, float radius)
   Plane3d frustum_plane[4];
   viewing_parameters_.frustum_planes(frustum_plane);
 
-	for (int i = 0; i < 4; i++) {
+	for (short i = 0; i < 4; i++) {
 		if (frustum_plane[i].signed_distance(pos) < -radius)
 			return	true;
 	}
-	
 	return false;
 }
 
