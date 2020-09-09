@@ -128,7 +128,7 @@ template<> class VectorDataT<float, 4> {
 #define TEMPLATE_HEADER   template <typename Scalar, int N>
 #define CLASSNAME         VectorT
 #define DERIVED           VectorDataT<Scalar,N>
-#define unroll(expr)      for (int i=0; i<N; ++i) expr(i)
+#define unroll(expr)      for (short i=0; i<N; ++i) expr(i)
 
 /** \class VectorT VectorT.hh <OpenMesh/Core/Math/VectorT.hh>
     A vector is an array of \<N\> values of type \<Scalar\>.
@@ -272,8 +272,6 @@ inline VectorT<Scalar,N>
 cross(const VectorT<Scalar,N>& _v1, const VectorT<Scalar,N>& _v2) {
   return (_v1 % _v2);
 }
-
-
 
 
 //== TYPEDEFS =================================================================
