@@ -170,7 +170,6 @@ void locate_fund_cut_vertices();
 
 void create_vertex_hierarchy();
 
-
 /// refine mesh up to _n vertices
 void refine(unsigned int _n);
 
@@ -292,9 +291,7 @@ int main(int argc, char **argv)
   replace_extension(spmfname, "spm");
 
   if ( ifname.empty() || spmfname.empty() )
-  {
     usage_and_exit(1);
-  }
 
   try
   {
@@ -464,7 +461,7 @@ save_vd_prog_mesh(const std::string &_filename)
   float                 radius, sin_square, mue_square, sigma_square;
   Mesh::FaceIter        f_it;
   Mesh::HalfedgeHandle  hh;
-  Mesh::VertexHandle    vh;
+  //Mesh::VertexHandle    vh;
   VHierarchyNodeIndex   node_index;
   VHierarchyNodeIndex   fund_lcut_index, fund_rcut_index;
   VHierarchyNodeHandle  node_handle, lchild_handle, rchild_handle;
@@ -494,9 +491,9 @@ save_vd_prog_mesh(const std::string &_filename)
   for (i=0; i<n_base_vertices_; ++i)
   {
     node_handle = vhierarchy_.root_handle(i);
-    vh = vhierarchy_.node(node_handle).vertex_handle();
+    //vh = vhierarchy_.node(node_handle).vertex_handle();
     
-    p             = mesh_.point(vh);
+    p             = mesh_.point(vhierarchy_.node(node_handle).vertex_handle());
     radius        = vhierarchy_.node(node_handle).radius();
     normal        = vhierarchy_.node(node_handle).normal();
     sin_square    = vhierarchy_.node(node_handle).sin_square();
@@ -510,28 +507,28 @@ save_vd_prog_mesh(const std::string &_filename)
     IO::store(ofs, mue_square, swap);
     IO::store(ofs, sigma_square, swap);
 
-    handle2index_map[vh] = i;
+    handle2index_map[vhierarchy_.node(node_handle).vertex_handle()] = i;
   }
 
  
   for (f_it=mesh_.faces_begin(); f_it!=mesh_.faces_end(); ++f_it) {
+	  
     hh = mesh_.halfedge_handle(*f_it);
-    vh = mesh_.to_vertex_handle(hh);
-    fvi[0] = handle2index_map[vh];
+    //vh = mesh_.to_vertex_handle(mesh_.halfedge_handle(*f_it));
+    fvi[0] = handle2index_map[mesh_.to_vertex_handle(mesh_.halfedge_handle(*f_it))];
 
     hh = mesh_.next_halfedge_handle(hh);
-    vh = mesh_.to_vertex_handle(hh);
-    fvi[1] = handle2index_map[vh];
+    //vh = mesh_.to_vertex_handle(mesh_.next_halfedge_handle(hh));
+    fvi[1] = handle2index_map[mesh_.to_vertex_handle(hh)];
 
     hh = mesh_.next_halfedge_handle(hh);
-    vh = mesh_.to_vertex_handle(hh);
-    fvi[2] = handle2index_map[vh];
+    //vh = mesh_.to_vertex_handle(hh);
+    fvi[2] = handle2index_map[mesh_.to_vertex_handle(hh)];
 
     IO::store(ofs, fvi[0], swap);
     IO::store(ofs, fvi[1], swap);
     IO::store(ofs, fvi[2], swap);
   }
-
 
   // write progressive detail (vertex hierarchy)
 
@@ -542,7 +539,6 @@ save_vd_prog_mesh(const std::string &_filename)
     p = mesh_.point(pminfo.v0);
 
     IO::store(ofs, p, swap);
-
 
     node_handle   = mesh_.data(pminfo.v1).vhierarchy_node_handle();
     lchild_handle = vhierarchy_.lchild_handle(node_handle);
@@ -932,8 +928,8 @@ compute_mue_sigma(VHierarchyNodeHandle node_handle,
       res = *r_it;
       float res_length = res.length();
 
-      // TODO: take care when res.length() is too small
-      float degree = acosf(dot(vn,res) / res_length);
+      // TODO: take care when res.length() is too small ?
+      float degree = acosf(dot(vn,res) / (res_length+eps));
 
       if (degree < 0.0f)    degree = -degree;
       if (degree > float(M_PI_2))  degree = float(M_PI) - degree;
@@ -966,7 +962,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
   float	c = dot(E1, E1);                  // fA11
   float	d = dot(E0, D);                   // fB0
   float	e = dot(E1, D);                   // fB1
-  //float	f = dot(D, D);                    // fC
+  //float	f = dot(D, D);            // fC
   float det = fabsf(a*c - b*b);
   s = b*e-c*d;
   t = b*d-a*e;
@@ -1178,8 +1174,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
   }
 
   residual = p - (B + s*E0 + t*E1);
-
-  return	residual;
+  return residual;
 }
 
 // ============================================================================
